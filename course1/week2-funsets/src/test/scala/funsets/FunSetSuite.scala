@@ -125,9 +125,58 @@ class FunSetSuite extends FunSuite {
 
   test("filter sets") {
     new TestSets {
-      val difference = diff(union(s1, s2), s1)
-      assert(!contains(difference, 1), "s1 is in both")
-      assert(contains(difference, 2), "s2 is only in the first argument")
+      val filteredSet = filter(union(s1, s2), (x: Int) => x >= 2)
+      assert(!contains(filteredSet, 1), "(1) isn't accepted by predicate")
+      assert(contains(filteredSet, 2), "(2) is accepted by predicate")
+      assert(!contains(filteredSet, 3), "(3) is not in set")
+    }
+
+    new TestSets {
+      val filteredSet = filter(union(s1, s2), (x: Int) => x > 2)
+      assert(!contains(filteredSet, 1), "(1) isn't accepted by predicate")
+      assert(!contains(filteredSet, 2), "(2) isn't accepted by predicate")
+    }
+  }
+
+  test("forall") {
+    new TestSets {
+      val s = union(union(s2, singletonSet(4)), singletonSet(6))
+      assert(forall(s, (x: Int) => x % 2 == 0), "every element is even")
+    }
+
+    new TestSets {
+      val s = union(union(singletonSet(-10), singletonSet(-8)), singletonSet(6))
+      assert(forall(s, (x: Int) => x % 2 == 0), "every element is even")
+    }
+
+    new TestSets {
+      val s = union(union(singletonSet(-9), singletonSet(8)), singletonSet(6))
+      assert(!forall(s, (x: Int) => x % 2 == 0), "not every element is even")
+    }
+  }
+
+  test("exists") {
+    new TestSets {
+      val s = union(union(s2, singletonSet(4)), singletonSet(6))
+      assert(exists(s, (x: Int) => x % 2 == 0), "There exists even element")
+    }
+
+    new TestSets {
+      val s = union(union(s1, singletonSet(4)), singletonSet(5))
+      assert(exists(s, (x: Int) => x % 2 == 0), "There exists even element")
+    }
+
+    new TestSets {
+      val s = union(union(s1, singletonSet(3)), singletonSet(5))
+      assert(!exists(s, (x: Int) => x % 2 == 0), "There does not exist even element")
+    }
+  }
+
+  test("map") {
+    new TestSets {
+      val allOdd = union(union(s1, singletonSet(3)), singletonSet(5))
+      val mapToEven = map(allOdd, (x: Int) => x + 1)
+      assert(forall(mapToEven, (x: Int) => x % 2 == 0))
     }
   }
 }

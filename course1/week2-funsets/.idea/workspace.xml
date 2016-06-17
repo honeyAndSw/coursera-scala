@@ -32,8 +32,8 @@
           <file leaf-file-name="FunSets.scala" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/main/scala/funsets/FunSets.scala">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.3858521">
-                  <caret line="44" column="52" selection-start-line="44" selection-start-column="52" selection-end-line="44" selection-end-column="52" />
+                <state vertical-scroll-proportion="0.2676311">
+                  <caret line="97" column="7" selection-start-line="97" selection-start-column="7" selection-end-line="97" selection-end-column="7" />
                   <folding />
                 </state>
               </provider>
@@ -46,8 +46,8 @@
           <file leaf-file-name="FunSetSuite.scala" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/test/scala/funsets/FunSetSuite.scala">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.6864952">
-                  <caret line="126" column="18" selection-start-line="126" selection-start-column="18" selection-end-line="126" selection-end-column="18" />
+                <state vertical-scroll-proportion="0.8101266">
+                  <caret line="176" column="10" selection-start-line="176" selection-start-column="10" selection-end-line="176" selection-end-column="10" />
                   <folding />
                 </state>
               </provider>
@@ -65,8 +65,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/scala/funsets/FunSets.scala" />
         <option value="$PROJECT_DIR$/src/test/scala/funsets/FunSetSuite.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/funsets/FunSets.scala" />
       </list>
     </option>
   </component>
@@ -201,8 +201,8 @@
   <component name="PropertiesComponent">
     <property name="FullScreen" value="true" />
   </component>
-  <component name="RunManager" selected="ScalaTest.FunSetSuite.diff">
-    <configuration default="false" name="FunSetSuite.contains is implemented" type="ScalaTestRunConfiguration" factoryName="ScalaTest" temporary="true">
+  <component name="RunManager" selected="ScalaTest.FunSetSuite.map">
+    <configuration default="false" name="FunSetSuite.filter sets" type="ScalaTestRunConfiguration" factoryName="ScalaTest" temporary="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="root" />
       <setting name="path" value="funsets.FunSetSuite" />
@@ -211,13 +211,13 @@
       <setting name="params" value="" />
       <setting name="workingDirectory" value="file://$PROJECT_DIR$" />
       <setting name="searchForTest" value="Across module dependencies" />
-      <setting name="testName" value="contains is implemented" />
+      <setting name="testName" value="filter sets" />
       <setting name="testKind" value="Test name" />
       <setting name="showProgressMessages" value="true" />
       <envs />
       <method />
     </configuration>
-    <configuration default="false" name="FunSetSuite.singletonSet(1) contains 1" type="ScalaTestRunConfiguration" factoryName="ScalaTest" temporary="true">
+    <configuration default="false" name="FunSetSuite.forall" type="ScalaTestRunConfiguration" factoryName="ScalaTest" temporary="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="root" />
       <setting name="path" value="funsets.FunSetSuite" />
@@ -226,13 +226,13 @@
       <setting name="params" value="" />
       <setting name="workingDirectory" value="file://$PROJECT_DIR$" />
       <setting name="searchForTest" value="Across module dependencies" />
-      <setting name="testName" value="singletonSet(1) contains 1" />
+      <setting name="testName" value="forall" />
       <setting name="testKind" value="Test name" />
       <setting name="showProgressMessages" value="true" />
       <envs />
       <method />
     </configuration>
-    <configuration default="false" name="FunSetSuite.union contains all elements of each set" type="ScalaTestRunConfiguration" factoryName="ScalaTest" temporary="true">
+    <configuration default="false" name="FunSetSuite.forall2" type="ScalaTestRunConfiguration" factoryName="ScalaTest" temporary="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="root" />
       <setting name="path" value="funsets.FunSetSuite" />
@@ -241,13 +241,13 @@
       <setting name="params" value="" />
       <setting name="workingDirectory" value="file://$PROJECT_DIR$" />
       <setting name="searchForTest" value="Across module dependencies" />
-      <setting name="testName" value="union contains all elements of each set" />
+      <setting name="testName" value="forall2" />
       <setting name="testKind" value="Test name" />
       <setting name="showProgressMessages" value="true" />
       <envs />
       <method />
     </configuration>
-    <configuration default="false" name="FunSetSuite.intersect contains elements which belong to both set" type="ScalaTestRunConfiguration" factoryName="ScalaTest" temporary="true">
+    <configuration default="false" name="FunSetSuite.exists" type="ScalaTestRunConfiguration" factoryName="ScalaTest" temporary="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="root" />
       <setting name="path" value="funsets.FunSetSuite" />
@@ -256,13 +256,13 @@
       <setting name="params" value="" />
       <setting name="workingDirectory" value="file://$PROJECT_DIR$" />
       <setting name="searchForTest" value="Across module dependencies" />
-      <setting name="testName" value="intersect contains elements which belong to both set" />
+      <setting name="testName" value="exists" />
       <setting name="testKind" value="Test name" />
       <setting name="showProgressMessages" value="true" />
       <envs />
       <method />
     </configuration>
-    <configuration default="false" name="FunSetSuite.diff" type="ScalaTestRunConfiguration" factoryName="ScalaTest" temporary="true">
+    <configuration default="false" name="FunSetSuite.map" type="ScalaTestRunConfiguration" factoryName="ScalaTest" temporary="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="root" />
       <setting name="path" value="funsets.FunSetSuite" />
@@ -271,7 +271,7 @@
       <setting name="params" value="" />
       <setting name="workingDirectory" value="file://$PROJECT_DIR$" />
       <setting name="searchForTest" value="Across module dependencies" />
-      <setting name="testName" value="diff" />
+      <setting name="testName" value="map" />
       <setting name="testKind" value="Test name" />
       <setting name="showProgressMessages" value="true" />
       <envs />
@@ -567,19 +567,19 @@
       <method />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="ScalaTest.FunSetSuite.contains is implemented" />
-      <item index="1" class="java.lang.String" itemvalue="ScalaTest.FunSetSuite.singletonSet(1) contains 1" />
-      <item index="2" class="java.lang.String" itemvalue="ScalaTest.FunSetSuite.union contains all elements of each set" />
-      <item index="3" class="java.lang.String" itemvalue="ScalaTest.FunSetSuite.intersect contains elements which belong to both set" />
-      <item index="4" class="java.lang.String" itemvalue="ScalaTest.FunSetSuite.diff" />
+      <item index="0" class="java.lang.String" itemvalue="ScalaTest.FunSetSuite.filter sets" />
+      <item index="1" class="java.lang.String" itemvalue="ScalaTest.FunSetSuite.forall" />
+      <item index="2" class="java.lang.String" itemvalue="ScalaTest.FunSetSuite.forall2" />
+      <item index="3" class="java.lang.String" itemvalue="ScalaTest.FunSetSuite.exists" />
+      <item index="4" class="java.lang.String" itemvalue="ScalaTest.FunSetSuite.map" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="ScalaTest.FunSetSuite.diff" />
-        <item index="1" class="java.lang.String" itemvalue="ScalaTest.FunSetSuite.intersect contains elements which belong to both set" />
-        <item index="2" class="java.lang.String" itemvalue="ScalaTest.FunSetSuite.union contains all elements of each set" />
-        <item index="3" class="java.lang.String" itemvalue="ScalaTest.FunSetSuite.singletonSet(1) contains 1" />
-        <item index="4" class="java.lang.String" itemvalue="ScalaTest.FunSetSuite.contains is implemented" />
+        <item index="0" class="java.lang.String" itemvalue="ScalaTest.FunSetSuite.map" />
+        <item index="1" class="java.lang.String" itemvalue="ScalaTest.FunSetSuite.exists" />
+        <item index="2" class="java.lang.String" itemvalue="ScalaTest.FunSetSuite.forall" />
+        <item index="3" class="java.lang.String" itemvalue="ScalaTest.FunSetSuite.forall2" />
+        <item index="4" class="java.lang.String" itemvalue="ScalaTest.FunSetSuite.filter sets" />
       </list>
     </recent_temporary>
   </component>
@@ -629,26 +629,35 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="FunSetSuite_contains_is_implemented - 2016.06.17 at 20h 33m 45s.xml">
-      <configuration name="FunSetSuite.contains is implemented" configurationId="ScalaTestRunConfiguration" />
+    <history-entry file="FunSetSuite_exists - 2016.06.17 at 21h 49m 14s.xml">
+      <configuration name="FunSetSuite.exists" configurationId="ScalaTestRunConfiguration" />
     </history-entry>
-    <history-entry file="FunSetSuite_diff - 2016.06.17 at 21h 02m 17s.xml">
-      <configuration name="FunSetSuite.diff" configurationId="ScalaTestRunConfiguration" />
+    <history-entry file="FunSetSuite_exists - 2016.06.17 at 21h 49m 51s.xml">
+      <configuration name="FunSetSuite.exists" configurationId="ScalaTestRunConfiguration" />
     </history-entry>
-    <history-entry file="FunSetSuite_intersect_contains_elements_which_belong_to_both_set - 2016.06.17 at 20h 55m 32s.xml">
-      <configuration name="FunSetSuite.intersect contains elements which belong to both set" configurationId="ScalaTestRunConfiguration" />
+    <history-entry file="FunSetSuite_exists - 2016.06.17 at 21h 50m 28s.xml">
+      <configuration name="FunSetSuite.exists" configurationId="ScalaTestRunConfiguration" />
     </history-entry>
-    <history-entry file="FunSetSuite_singletonSet(1)_contains_1 - 2016.06.17 at 20h 34m 40s.xml">
-      <configuration name="FunSetSuite.singletonSet(1) contains 1" configurationId="ScalaTestRunConfiguration" />
+    <history-entry file="FunSetSuite_exists - 2016.06.17 at 21h 50m 57s.xml">
+      <configuration name="FunSetSuite.exists" configurationId="ScalaTestRunConfiguration" />
     </history-entry>
-    <history-entry file="FunSetSuite_singletonSet(1)_contains_1 - 2016.06.17 at 20h 45m 23s.xml">
-      <configuration name="FunSetSuite.singletonSet(1) contains 1" configurationId="ScalaTestRunConfiguration" />
+    <history-entry file="FunSetSuite_exists - 2016.06.17 at 21h 56m 13s.xml">
+      <configuration name="FunSetSuite.exists" configurationId="ScalaTestRunConfiguration" />
     </history-entry>
-    <history-entry file="FunSetSuite_singletonSet(1)_contains_1 - 2016.06.17 at 20h 48m 20s.xml">
-      <configuration name="FunSetSuite.singletonSet(1) contains 1" configurationId="ScalaTestRunConfiguration" />
+    <history-entry file="FunSetSuite_forall - 2016.06.17 at 21h 55m 34s.xml">
+      <configuration name="FunSetSuite.forall" configurationId="ScalaTestRunConfiguration" />
     </history-entry>
-    <history-entry file="FunSetSuite_union_contains_all_elements_of_each_set - 2016.06.17 at 20h 53m 21s.xml">
-      <configuration name="FunSetSuite.union contains all elements of each set" configurationId="ScalaTestRunConfiguration" />
+    <history-entry file="FunSetSuite_map - 2016.06.17 at 21h 53m 23s.xml">
+      <configuration name="FunSetSuite.map" configurationId="ScalaTestRunConfiguration" />
+    </history-entry>
+    <history-entry file="FunSetSuite_map - 2016.06.17 at 22h 01m 03s.xml">
+      <configuration name="FunSetSuite.map" configurationId="ScalaTestRunConfiguration" />
+    </history-entry>
+    <history-entry file="FunSetSuite_map - 2016.06.17 at 22h 06m 57s.xml">
+      <configuration name="FunSetSuite.map" configurationId="ScalaTestRunConfiguration" />
+    </history-entry>
+    <history-entry file="FunSetSuite_map - 2016.06.17 at 22h 07m 19s.xml">
+      <configuration name="FunSetSuite.map" configurationId="ScalaTestRunConfiguration" />
     </history-entry>
   </component>
   <component name="ToolWindowManager">
@@ -663,7 +672,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23798358" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31887457" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15277778" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -703,16 +712,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/funsets/FunSets.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3858521">
-          <caret line="44" column="52" selection-start-line="44" selection-start-column="52" selection-end-line="44" selection-end-column="52" />
+        <state vertical-scroll-proportion="0.2676311">
+          <caret line="97" column="7" selection-start-line="97" selection-start-column="7" selection-end-line="97" selection-end-column="7" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/scala/funsets/FunSetSuite.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6864952">
-          <caret line="126" column="18" selection-start-line="126" selection-start-column="18" selection-end-line="126" selection-end-column="18" />
+        <state vertical-scroll-proportion="0.8101266">
+          <caret line="176" column="10" selection-start-line="176" selection-start-column="10" selection-end-line="176" selection-end-column="10" />
           <folding />
         </state>
       </provider>
