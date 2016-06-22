@@ -1,4 +1,5 @@
 import week3.Rational
+
 object scratch {
   val rational = new Rational(1, 2)
   def error(message: String) = throw new Error(message)
