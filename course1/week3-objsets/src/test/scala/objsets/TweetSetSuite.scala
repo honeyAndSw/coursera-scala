@@ -72,4 +72,21 @@ class TweetSetSuite extends FunSuite {
     }
   }
 
+  test("mostRetweeted : empty set(1)") {
+    new TestSets {
+      try {
+        set1.mostRetweeted
+      } catch {
+        case _ : NoSuchElementException =>
+      }
+    }
   }
+
+  test("mostRetweeted : not empty set") {
+    new TestSets {
+        assert(set5.mostRetweeted.retweets == 20)
+        assert(set1.incl(c).incl(d).mostRetweeted.retweets == 9)
+    }
+  }
+
+}
