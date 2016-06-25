@@ -89,4 +89,27 @@ class TweetSetSuite extends FunSuite {
     }
   }
 
+  trait UnorderedTestSets {
+    val t5 = new Tweet("7", "7 body", 7)
+    val t10 = new Tweet("10", "10 body", 10)
+    val t15 = new Tweet("15", "15 body", 15)
+
+    val set0 = new Empty
+    val set1 = set0.incl(t5).incl(t10).incl(t15)
+    val set2 = set0.incl(t15).incl(t5).incl(t5)
+  }
+
+  test("descendingByRetweet : set0") {
+    new UnorderedTestSets {
+      assert((set0.descendingByRetweet).isEmpty)
+    }
+  }
+
+  test("descendingByRetweet") {
+    new UnorderedTestSets {
+      assert(!(set1.descendingByRetweet).isEmpty)
+      assert(set1.descendingByRetweet.head.retweets == 15)
+      assert(set2.descendingByRetweet.head.retweets == 15)
+    }
+  }
 }
