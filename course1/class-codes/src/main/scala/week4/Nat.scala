@@ -2,6 +2,7 @@ package week4
 
 /**
   * Nat, peano number class.
+  * https://wiki.haskell.org/Peano_numbers
   * Positive number class with simple operations
   */
 abstract class Nat {
