@@ -1,7 +1,7 @@
 package week4
 
 object exprs {
-  val show1 = show(Num(1))
+  show(Num(1))
   show(Sum(Num(1), Num(2)))
 
   trait Expr
