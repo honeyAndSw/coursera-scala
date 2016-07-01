@@ -107,9 +107,13 @@ class HuffmanSuite extends FunSuite {
 
   test("encode and quick encode make same results") {
     new TestTrees {
-      val encoded = encode(t1)("abc".toList)
-      val quickEncoded = quickEncode(t1)("abc".toList)
+      val encoded = encode(t1)("ab".toList)
+      val quickEncoded = quickEncode(t1)("ab".toList)
       assert(encoded.equals(quickEncoded))
+    }
+
+    new TestTrees {
+      assert(encode(t2)("bad".toList) equals encode(t2)("bad".toList))
     }
   }
 
