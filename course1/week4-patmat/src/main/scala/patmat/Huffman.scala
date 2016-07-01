@@ -235,7 +235,6 @@ object Huffman {
       }
     }
 
-    println("decode. bits:" + bits)
     decodeRecursive(tree, bits)
   }
 
@@ -257,7 +256,6 @@ object Huffman {
    */
   def decodedSecret: List[Char] = {
     val revealSecret = decode(frenchCode, secret)
-    println(revealSecret)
 
     revealSecret
   }
@@ -269,14 +267,11 @@ object Huffman {
    * into a sequence of bits.
    */
   def encode(tree: CodeTree)(text: List[Char]): List[Bit] = {
-    // println("encode. text:" + text)
-
     if (text.isEmpty) {
       Nil
     }
     else{
       val headEncoded: List[Bit] = encodeEach(tree, text.head, List())
-      println("ch:" + text.head + ", encoded:" + headEncoded)
       headEncoded ::: encode(tree)(text.tail)
     }
   }
@@ -350,8 +345,6 @@ object Huffman {
    * and then uses it to perform the actual encoding.
    */
   def quickEncode(tree: CodeTree)(text: List[Char]): List[Bit] = {
-    println("quickEncode. tree:" + tree + ", text:" + text)
-
     val codeTable = convert(tree)
 
     def quickEncodeEach(text: List[Char]): List[Bit] = {
