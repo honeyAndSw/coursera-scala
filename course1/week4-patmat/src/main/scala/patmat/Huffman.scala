@@ -217,8 +217,28 @@ object Huffman {
    * This function decodes the bit sequence `bits` using the code tree `tree` and returns
    * the resulting list of characters.
    */
-    def decode(tree: CodeTree, bits: List[Bit]): List[Char] = ???
-  
+  def CONST_LEFT = 0
+  def CONST_RIGHT = 1
+
+  def decode(tree: CodeTree, bits: List[Bit]): List[Char] = {
+
+    def decodeRecursive(currentTree: CodeTree, bits: List[Bit]): List[Char] = {
+      currentTree match {
+        case fork: Fork =>
+          // Need to go down
+          if (bits.head == CONST_LEFT)
+            decodeRecursive(fork.left, bits.tail)
+          else
+            decodeRecursive(fork.right, bits.tail)
+        case leaf: Leaf =>
+          // Start from the root, if there's more bits.
+          leaf.char :: (if (bits.isEmpty) Nil else decodeRecursive(tree, bits))
+      }
+    }
+
+    decodeRecursive(tree, bits)
+  }
+
   /**
    * A Huffman coding tree for the French language.
    * Generated from the data given at
@@ -235,8 +255,12 @@ object Huffman {
   /**
    * Write a function that returns the decoded secret
    */
-    def decodedSecret: List[Char] = ???
-  
+  def decodedSecret: List[Char] = {
+    val revealSecret = decode(frenchCode, secret)
+    println(revealSecret)
+
+    revealSecret
+  }
 
   // Part 4a: Encoding using Huffman tree
 
@@ -244,8 +268,31 @@ object Huffman {
    * This function encodes `text` using the code tree `tree`
    * into a sequence of bits.
    */
-    def encode(tree: CodeTree)(text: List[Char]): List[Bit] = ???
-  
+  def encode(tree: CodeTree)(text: List[Char]): List[Bit] = {
+    if (text.isEmpty) {
+      Nil
+    }
+    else{
+      val headEncoded: List[Bit] = encodeEach(tree, text.head, List())
+      headEncoded ::: encode(tree)(text.tail)
+    }
+  }
+
+  def encodeEach(tree: CodeTree, ch: Char, acc: List[Bit]): List[Bit] = {
+    tree match {
+      case fork: Fork =>
+        if (fork.chars.contains(ch)) {
+          val leftTraverse = encodeEach(fork.left, ch, CONST_LEFT :: acc)
+          if (!leftTraverse.isEmpty) leftTraverse
+          else encodeEach(fork.right, ch, CONST_RIGHT :: acc)
+        } else {
+          Nil
+        }
+      case leaf: Leaf =>
+        if (leaf.char == ch) acc else Nil
+    }
+  }
+
   // Part 4b: Encoding using code table
 
   type CodeTable = List[(Char, List[Bit])]
@@ -254,7 +301,11 @@ object Huffman {
    * This function returns the bit sequence that represents the character `char` in
    * the code table `table`.
    */
-    def codeBits(table: CodeTable)(char: Char): List[Bit] = ???
+  def codeBits(table: CodeTable)(char: Char): List[Bit] = {
+    val head = table.head
+    if (head._1 == char) head._2
+    else codeBits(table.tail)(char)
+  }
   
   /**
    * Given a code tree, create a code table which contains, for every character in the
@@ -264,7 +315,7 @@ object Huffman {
    * a valid code tree that can be represented as a code table. Using the code tables of the
    * sub-trees, think of how to build the code table for the entire tree.
    */
-    def convert(tree: CodeTree): CodeTable = ???
+  def convert(tree: CodeTree): CodeTable = ???
   
   /**
    * This function takes two code tables and merges them into one. Depending on how you
@@ -279,5 +330,16 @@ object Huffman {
    * To speed up the encoding process, it first converts the code tree to a code table
    * and then uses it to perform the actual encoding.
    */
-    def quickEncode(tree: CodeTree)(text: List[Char]): List[Bit] = ???
+  def quickEncode(tree: CodeTree)(text: List[Char]): List[Bit] = {
+    val codeTable = convert(tree)
+
+    def quickEncodeEach(text: List[Char]): List[Bit] = {
+      text match {
+        case List() => List()
+        case head :: tail => codeBits(codeTable)(head) ::: quickEncodeEach(tail)
+      }
+    }
+
+    quickEncodeEach(text)
   }
+}
