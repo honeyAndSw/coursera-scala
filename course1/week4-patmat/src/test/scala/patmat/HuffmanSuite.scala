@@ -95,6 +95,16 @@ class HuffmanSuite extends FunSuite {
 
   test("Decode secretCode") {
     val code = decodedSecret
+    println(code) // h, u, f, f, m, a, n, e, s, t, c, o, o, l
+  }
+
+  test("Encode some text with french code") {
+    val text = "encoreuntextetressecret";
+    assert(
+      encode(frenchCode)(text.toList)
+        equals
+        List(1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1)
+    )
   }
 
   test("decode and encode a very short text should be identity") {

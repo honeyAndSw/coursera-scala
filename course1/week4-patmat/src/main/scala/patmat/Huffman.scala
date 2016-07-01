@@ -136,7 +136,7 @@ object Huffman {
   /**
    * Checks whether the list `trees` contains only one single code tree.
    */
-  def singleton(trees: List[CodeTree]): Boolean = trees.size <= 1
+  def singleton(trees: List[CodeTree]): Boolean = !trees.isEmpty && trees.size == 1
 
   /**
    * The parameter `trees` of this function is a list of code trees ordered
@@ -163,7 +163,7 @@ object Huffman {
       }
     }
 
-    if (singleton(trees)) trees
+    if (trees.isEmpty || singleton(trees)) trees
     else {
       val newFork = makeCodeTree(trees.head, trees.tail.head)
       val left = trees.tail.tail
@@ -226,16 +226,16 @@ object Huffman {
       currentTree match {
         case fork: Fork =>
           // Need to go down
-          if (bits.head == CONST_LEFT)
-            decodeRecursive(fork.left, bits.tail)
-          else
-            decodeRecursive(fork.right, bits.tail)
+          if (bits.isEmpty) Nil
+          else if (bits.head == CONST_LEFT) decodeRecursive(fork.left, bits.tail)
+          else decodeRecursive(fork.right, bits.tail)
         case leaf: Leaf =>
           // Start from the root, if there's more bits.
           leaf.char :: (if (bits.isEmpty) Nil else decodeRecursive(tree, bits))
       }
     }
 
+    println("decode. bits:" + bits)
     decodeRecursive(tree, bits)
   }
 
@@ -269,11 +269,14 @@ object Huffman {
    * into a sequence of bits.
    */
   def encode(tree: CodeTree)(text: List[Char]): List[Bit] = {
+    // println("encode. text:" + text)
+
     if (text.isEmpty) {
       Nil
     }
     else{
       val headEncoded: List[Bit] = encodeEach(tree, text.head, List())
+      println("ch:" + text.head + ", encoded:" + headEncoded)
       headEncoded ::: encode(tree)(text.tail)
     }
   }
@@ -282,9 +285,9 @@ object Huffman {
     tree match {
       case fork: Fork =>
         if (fork.chars.contains(ch)) {
-          val leftTraverse = encodeEach(fork.left, ch, CONST_LEFT :: acc)
+          val leftTraverse = encodeEach(fork.left, ch, acc ::: List(CONST_LEFT))
           if (!leftTraverse.isEmpty) leftTraverse
-          else encodeEach(fork.right, ch, CONST_RIGHT :: acc)
+          else encodeEach(fork.right, ch, acc ::: List(CONST_RIGHT))
         } else {
           Nil
         }
@@ -347,6 +350,8 @@ object Huffman {
    * and then uses it to perform the actual encoding.
    */
   def quickEncode(tree: CodeTree)(text: List[Char]): List[Bit] = {
+    println("quickEncode. tree:" + tree + ", text:" + text)
+
     val codeTable = convert(tree)
 
     def quickEncodeEach(text: List[Char]): List[Bit] = {
