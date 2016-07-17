@@ -88,7 +88,10 @@ object Anagrams {
    *  in the example above could have been displayed in some other order.
    */
   def combinations(occurrences: Occurrences): List[Occurrences] =
-    List() :: combinationsInner(occurrences)
+    occurrences match {
+      case Nil => List(Nil)
+      case _ :: _ => List() :: combinationsInner(occurrences)
+    }
 
   def combinationsInner(occurrences: Occurrences): List[Occurrences] =
     occurrences match {
@@ -126,7 +129,14 @@ object Anagrams {
    *  Note: the resulting value is an occurrence - meaning it is sorted
    *  and has no zero-entries.
    */
-  def subtract(x: Occurrences, y: Occurrences): Occurrences = ???
+  def subtract(x: Occurrences, y: Occurrences): Occurrences = {
+    def hasSameOccurrence(that: Occurrence): Boolean = {
+      val (ch, occur) = that
+      y.forall((occurrence: Occurrence) => occurrence._1 != ch || occurrence._2 != occur)
+    }
+
+    x.filter(hasSameOccurrence)
+  }
 
   /** Returns a list of all anagram sentences of the given sentence.
    *
@@ -168,5 +178,8 @@ object Anagrams {
    *
    *  Note: There is only one anagram of an empty sentence.
    */
-  def sentenceAnagrams(sentence: Sentence): List[Sentence] = ???
+  def sentenceAnagrams(sentence: Sentence): List[Sentence] = sentence match {
+    case List() => List(Nil)
+    case head :: tail => List()
+  }
 }
