@@ -130,12 +130,18 @@ object Anagrams {
    *  and has no zero-entries.
    */
   def subtract(x: Occurrences, y: Occurrences): Occurrences = {
-    def hasSameOccurrence(that: Occurrence): Boolean = {
-      val (ch, occur) = that
-      y.forall((occurrence: Occurrence) => occurrence._1 != ch || occurrence._2 != occur)
+    val yMap = y toMap
+
+    def subtractCount(occrrc: Occurrence): Occurrence = {
+      val (ch, count) = occrrc
+      val countInY: Int = yMap.applyOrElse(ch, (ch: Char) => 0)
+
+      if (countInY <= 0) occrrc
+      else (ch, count - countInY)
     }
 
-    x.filter(hasSameOccurrence)
+    x.map(subtractCount)
+      .filter((occurr: Occurrence) => (occurr._2 > 0))
   }
 
   /** Returns a list of all anagram sentences of the given sentence.
@@ -180,6 +186,22 @@ object Anagrams {
    */
   def sentenceAnagrams(sentence: Sentence): List[Sentence] = sentence match {
     case List() => List(Nil)
-    case head :: tail => List()
+    case head :: tail => {
+      val sentenceOccrrs = sentenceOccurrences(sentence)
+      val occrrCombinations = combinations(sentenceOccrrs)
+
+      val combiAnagrams: List[List[Word]] = for {
+        combi <- occrrCombinations
+        if dictionaryByOccurrences.contains(combi)
+      } yield {
+        println(combi)
+        val combiOccrrs = dictionaryByOccurrences(combi)
+        println(combiOccrrs)
+        combiOccrrs
+      }
+
+      val words: List[Word] = dictionaryByOccurrences.applyOrElse(sentenceOccrrs, (occrrs: Occurrences) => Nil)
+      List()
+    }
   }
 }
