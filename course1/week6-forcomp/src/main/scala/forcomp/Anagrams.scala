@@ -132,16 +132,18 @@ object Anagrams {
   def subtract(x: Occurrences, y: Occurrences): Occurrences = {
     val yMap = y toMap
 
-    def subtractCount(occrrc: Occurrence): Occurrence = {
-      val (ch, count) = occrrc
-      val countInY: Int = yMap.applyOrElse(ch, (ch: Char) => 0)
-
-      if (countInY <= 0) occrrc
-      else (ch, count - countInY)
+    val subtractCount = x map {
+      case (ch: Char, cnt: Int) => {
+        val countInY: Int = yMap.applyOrElse(ch, (ch: Char) => 0)
+        if (countInY <= 0) (ch, cnt)
+        else (ch, cnt - countInY)
+      }
+    }
+    val filterCount = subtractCount filter {
+      case (ch: Char, cnt: Int) => cnt > 0
     }
 
-    x.map(subtractCount)
-      .filter((occurr: Occurrence) => (occurr._2 > 0))
+    filterCount
   }
 
   /** Returns a list of all anagram sentences of the given sentence.
@@ -187,21 +189,26 @@ object Anagrams {
   def sentenceAnagrams(sentence: Sentence): List[Sentence] = sentence match {
     case List() => List(Nil)
     case head :: tail => {
-      val sentenceOccrrs = sentenceOccurrences(sentence)
-      val occrrCombinations = combinations(sentenceOccrrs)
+      val fullOccurrences = sentenceOccurrences(sentence)
+      val fullCombinations = combinations(fullOccurrences)
 
-      val combiAnagrams: List[List[Word]] = for {
-        combi <- occrrCombinations
+      val combiAnagrams = for {
+        combi <- fullCombinations
         if dictionaryByOccurrences.contains(combi)
+        combiRest <- combinations(subtract(fullOccurrences, combi))
+        if dictionaryByOccurrences.contains(combiRest)
+
+        combiAna <- dictionaryByOccurrences(combi)
+        combiRestAna <- dictionaryByOccurrences(combiRest)
       } yield {
-        println(combi)
-        val combiOccrrs = dictionaryByOccurrences(combi)
-        println(combiOccrrs)
-        combiOccrrs
+        print("occurr:" + combiAna)
+        print("\trest:" + combiRestAna + "\t")
+        val combinedAna = List(combiAna, combiRestAna)
+        println(combinedAna)
+        combinedAna
       }
 
-      val words: List[Word] = dictionaryByOccurrences.applyOrElse(sentenceOccrrs, (occrrs: Occurrences) => Nil)
-      List()
+      combiAnagrams
     }
   }
 }
