@@ -29,7 +29,7 @@ trait Solver extends GameDef {
    * that are inside the terrain.
    */
   def neighborsWithHistory(b: Block, history: List[Move]): Stream[(Block, List[Move])] = (for {
-    neighbor <- b.neighbors
+    neighbor <- b.legalNeighbors
   } yield (neighbor._1, neighbor._2 :: history)).toStream
 
   /**
