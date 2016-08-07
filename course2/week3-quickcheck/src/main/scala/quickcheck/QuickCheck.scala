@@ -14,10 +14,12 @@ abstract class QuickCheckHeap extends Properties("Heap") with IntHeap {
   lazy val genHeap: Gen[H] = for {
     k1 <- arbitrary[Int]
     k2 <- arbitrary[Int]
+    k3 <- arbitrary[Int]
     h1 <- insert(k1, empty)
     h2 <- insert(k2, h1)
+    h3 <- insert(k3, h2)
   } yield {
-    h2
+    h3
   }
 
   implicit lazy val arbHeap: Arbitrary[H] = Arbitrary(genHeap)
@@ -33,16 +35,32 @@ abstract class QuickCheckHeap extends Properties("Heap") with IntHeap {
     * finding the minimum of the resulting heap should get the smallest of the two elements back.
     */
   property("insert two ints to empty heap, find min") = forAll { (a: Int, b: Int) =>
-    val twoElemHeap = insert(b, insert(a, empty))
-    findMin(twoElemHeap) == Math.min(a, b)
+      val twoElemHeap = insert(b, insert(a, empty))
+      findMin(twoElemHeap) == Math.min(a, b)
   }
+
+  property("insert three ints to empty heap") =
+    forAll { (a: Int, b: Int, c: Int) =>
+      val sortedInts = List(a, b, c).sorted
+
+      val threeElemHeap = insert(a, insert(b, insert(c, empty)))
+      findMin(threeElemHeap) == sortedInts(0)
+    }
+
+  property("insert three ints to empty heap (2)") =
+    forAll { (a: Int, b: Int, c: Int) =>
+      val sortedInts = List(a, b, c).sorted
+
+      val threeElemHeap = insert(a, insert(b, insert(c, empty)))
+      findMin(deleteMin(threeElemHeap)) == sortedInts(1)
+    }
 
   /**
     * Hint2
     * If you insert an element into an empty heap,
     * then delete the minimum, the resulting heap should be empty.
     */
-  property("insert and delete") = forAll { a: Int =>
+  property("insert an int and delete") = forAll { a: Int =>
     isEmpty(deleteMin(insert(a, empty)))
   }
 
@@ -86,5 +104,15 @@ abstract class QuickCheckHeap extends Properties("Heap") with IntHeap {
     val melding = meld(h1, h2)
     val meldingMin = if (isEmpty(melding)) 0 else findMin(melding)
     meldingMin == expectedMin
+  }
+
+  property("meld two empty heaps") = forAll { a: Int =>
+    val melt = meld(empty, empty)
+    isEmpty(melt)
+  }
+
+  property("meld non-empty and empty heap") = forAll { a: Int =>
+    val melt = meld(insert(a, empty), empty)
+    findMin(melt) == a
   }
 }
