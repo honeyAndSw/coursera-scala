@@ -18,21 +18,12 @@ class QuickCheckSuite extends FunSuite with Checkers {
   def checkBogus(p: Prop) {
     var ok = false
     try {
-      printProperties(p)
       check(p)
     } catch {
       case e: TestFailedException =>
         ok = true
     }
     assert(ok, "A bogus heap should NOT satisfy all properties. Try to find the bug!")
-  }
-
-  def printProperties(p: Prop): Unit = {
-    for {
-      each <- p.asInstanceOf[QuickCheckHeap].properties
-    } yield {
-      println(each.toString())
-    }
   }
 
   test("Binomial heap satisfies properties.") {
