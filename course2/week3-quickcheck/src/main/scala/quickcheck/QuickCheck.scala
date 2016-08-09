@@ -12,15 +12,8 @@ import scala.collection.immutable.IndexedSeq
 abstract class QuickCheckHeap extends Properties("Heap") with IntHeap {
 
   lazy val genHeap: Gen[H] = for {
-    k1 <- arbitrary[Int]
-    k2 <- arbitrary[Int]
-    k3 <- arbitrary[Int]
-    h1 <- insert(k1, empty)
-    h2 <- insert(k2, h1)
-    h3 <- insert(k3, h2)
-  } yield {
-    h3
-  }
+    ints <- arbitrary[List[Int]]
+  } yield construct(ints)
 
   implicit lazy val arbHeap: Arbitrary[H] = Arbitrary(genHeap)
 
