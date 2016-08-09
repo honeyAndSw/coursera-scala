@@ -24,6 +24,27 @@ abstract class QuickCheckHeap extends Properties("Heap") with IntHeap {
 
   implicit lazy val arbHeap: Arbitrary[H] = Arbitrary(genHeap)
 
+  /**
+    * Construct a heap, starting from an empty one.
+    *
+    * @param ints
+    * @return
+    */
+  def construct(ints: List[Int]): H = insertRecursive(ints, empty)
+
+  /**
+    * Helper function to insert integers recursively.
+    *
+    * @param ints
+    * @param heap
+    * @return
+    */
+  def insertRecursive(ints: List[Int], heap: H): H = ints match {
+    case Nil => heap
+    case head::Nil => insert(head, heap)
+    case head::tail => insert(head, insertRecursive(tail, heap))
+  }
+
   property("insert min, find min back") = forAll { (h: H) =>
     val m = if (isEmpty(h)) 0 else findMin(h)
     findMin(insert(m, h)) == m
@@ -35,7 +56,7 @@ abstract class QuickCheckHeap extends Properties("Heap") with IntHeap {
     * finding the minimum of the resulting heap should get the smallest of the two elements back.
     */
   property("insert two ints to empty heap, find min") = forAll { (a: Int, b: Int) =>
-      val twoElemHeap = insert(b, insert(a, empty))
+      val twoElemHeap = construct(List(a, b))
       findMin(twoElemHeap) == Math.min(a, b)
   }
 
@@ -43,7 +64,7 @@ abstract class QuickCheckHeap extends Properties("Heap") with IntHeap {
     forAll { (a: Int, b: Int, c: Int) =>
       val sortedInts = List(a, b, c).sorted
 
-      val threeElemHeap = insert(a, insert(b, insert(c, empty)))
+      val threeElemHeap = construct(List(a, b, c))
       findMin(threeElemHeap) == sortedInts(0)
     }
 
@@ -51,7 +72,7 @@ abstract class QuickCheckHeap extends Properties("Heap") with IntHeap {
     forAll { (a: Int, b: Int, c: Int) =>
       val sortedInts = List(a, b, c).sorted
 
-      val threeElemHeap = insert(a, insert(b, insert(c, empty)))
+      val threeElemHeap = construct(List(a, b, c))
       findMin(deleteMin(threeElemHeap)) == sortedInts(1)
     }
 
