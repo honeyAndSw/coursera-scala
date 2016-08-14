@@ -33,7 +33,6 @@ class CalculatorSuite extends FunSuite with ShouldMatchers {
     assert(result() == MaxTweetLength - tweetLength("foo blabla \uD83D\uDCA9 bar"))
   }
 
-
   test("colorForRemainingCharsCount with a constant signal") {
     val resultGreen1 = TweetLength.colorForRemainingCharsCount(Var(52))
     assert(resultGreen1() == "green")
@@ -51,4 +50,30 @@ class CalculatorSuite extends FunSuite with ShouldMatchers {
     assert(resultRed2() == "red")
   }
 
+  test("Polynomial.computeDelta") {
+    // x^2 + 2x + 1
+    val delta1 = Polynomial.computeDelta(Var(1), Var(2), Var(1))
+    assert(delta1() == 0)
+
+    // 2x^2 - 4x + 2
+    val delta2 = Polynomial.computeDelta(Var(2), Var(-4), Var(2))
+    assert(delta2() == 0)
+
+    // x^2 + 3x + 5
+    val delta3 = Polynomial.computeDelta(Var(1), Var(3), Var(5))
+    assert(delta3() == -11)
+  }
+
+  test("Polynomial.computeSolutions") {
+    // x^2 + 2x + 1
+    val delta1 = Polynomial.computeDelta(Var(1), Var(2), Var(1))
+    val solution1 = Polynomial.computeSolutions(Var(1), Var(2), Var(1), delta1)
+    val s1: Set[Double] = solution1()
+    assert(s1.size == 1)
+    assert(s1.equals(Set(-1)))
+
+    val delta2 = Polynomial.computeDelta(Var(1), Var(3), Var(5))
+    val solution2 = Polynomial.computeSolutions(Var(1), Var(3), Var(5), delta2)
+    assert(solution2().size == 0)
+  }
 }
