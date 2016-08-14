@@ -50,6 +50,15 @@ class CalculatorSuite extends FunSuite with ShouldMatchers {
     assert(resultRed2() == "red")
   }
 
+  test("colorForRemainingCharsCount with Var") {
+    val value: Var[Int] = Var(16)
+    val resultGreen = TweetLength.colorForRemainingCharsCount(value)
+    assert(resultGreen() == "green")
+
+    value.update(14)
+    assert(resultGreen() == "orange")
+  }
+
   test("Polynomial.computeDelta") {
     // x^2 + 2x + 1
     val delta1 = Polynomial.computeDelta(Var(1), Var(2), Var(1))

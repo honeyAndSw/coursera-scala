@@ -11,7 +11,9 @@ object Polynomial {
     */
   def computeDelta(a: Signal[Double], b: Signal[Double], c: Signal[Double])
   : Signal[Double] = {
-    return Signal((b() * b()) - (4 * a() * c()))
+    Signal{
+      (b() * b()) - (4 * a() * c())
+    }
   }
 
   /**
@@ -25,15 +27,18 @@ object Polynomial {
     */
   def computeSolutions(a: Signal[Double], b: Signal[Double],
       c: Signal[Double], delta: Signal[Double]): Signal[Set[Double]] = {
-    if (delta() < 0) {
-      return Signal(Set())
-    } else if (delta() == 0) {
-      val root: Double = -b() / (2 * a())
-      return Signal(Set(root))
-    } else {
-      val root1 = (-b() + delta()) / (2 * a())
-      val root2 = (-b() - delta()) / (2 * a())
-      return Signal(Set(root1, root2))
+    Signal {
+      if (delta() < 0) {
+        Set()
+      } else if (delta() == 0) {
+        val root: Double = (- b()) / (2 * a())
+        Set(root)
+      } else {
+        val root1 = (- b() + delta()) / (2 * a())
+        val root2 = (- b() - delta()) / (2 * a())
+        Set(root1, root2)
+      }
     }
   }
+
 }
