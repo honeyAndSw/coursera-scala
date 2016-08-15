@@ -92,4 +92,19 @@ class CalculatorSuite extends FunSuite with ShouldMatchers {
 
     assert((values("a"))() == 5)
   }
+
+  test("Expr.Refs - cyclic dependencies") {
+    // a = b + 1
+    val exprA = new Plus(new Ref("b"), new Literal(1))
+    // b = 2 * a
+    val exprB = new Times(new Literal(2), new Ref("a"))
+
+    val exprs: Map[String, Signal[Expr]] = Map(
+      "a" -> Signal(exprA),
+      "b" -> Signal(exprB))
+
+    val values = Calculator.computeValues(exprs)
+
+    assert((values("a"))().equals(Double.NaN))
+  }
 }
