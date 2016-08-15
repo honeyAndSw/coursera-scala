@@ -86,6 +86,14 @@ class CalculatorSuite extends FunSuite with ShouldMatchers {
     assert(solution2().size == 0)
   }
 
+  test("Polynomial.computeSolutions(2)") {
+    // x^2 + 4x + 1
+    val delta1 = Polynomial.computeDelta(Var(1), Var(4), Var(1))
+    val solution1 = Polynomial.computeSolutions(Var(1), Var(4), Var(1), delta1)
+    val s1: Set[Double] = solution1()
+    assert(s1.size == 2)
+  }
+
   test("Expr.Literal") {
     val exprs: Map[String, Signal[Expr]] = Map("a" -> Signal(new Literal(5)))
     val values = Calculator.computeValues(exprs)

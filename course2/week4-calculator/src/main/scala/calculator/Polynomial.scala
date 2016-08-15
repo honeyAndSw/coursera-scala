@@ -34,8 +34,8 @@ object Polynomial {
         val root: Double = (- b()) / (2 * a())
         Set(root)
       } else {
-        val root1 = (- b() + delta()) / (2 * a())
-        val root2 = (- b() - delta()) / (2 * a())
+        val root1 = (- b() + Math.sqrt(delta())) / (2 * a())
+        val root2 = (- b() - Math.sqrt(delta())) / (2 * a())
         Set(root1, root2)
       }
     }
