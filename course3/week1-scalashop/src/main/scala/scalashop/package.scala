@@ -3,7 +3,8 @@ import common._
 
 package object scalashop {
 
-  /** The value of every pixel is represented as a 32 bit integer. */
+  /** The value of every pixel is represented as a 32 bit integer.
+    * R(Red), G(Green), B(Blue), A(Alpha, the amount of transparency) */
   type RGBA = Int
 
   /** Returns the red component. */
@@ -30,17 +31,46 @@ package object scalashop {
     else v
   }
 
-  /** Image is a two-dimensional matrix of pixel values. */
+  /** Image is a two-dimensional matrix of pixel values.
+    * (x, y) position is mapped to 'y * width + x' index of data. */
   class Img(val width: Int, val height: Int, private val data: Array[RGBA]) {
     def this(w: Int, h: Int) = this(w, h, new Array(w * h))
+
     def apply(x: Int, y: Int): RGBA = data(y * width + x)
+
     def update(x: Int, y: Int, c: RGBA): Unit = data(y * width + x) = c
   }
 
   /** Computes the blurred RGBA value of a single pixel of the input image. */
   def boxBlurKernel(src: Img, x: Int, y: Int, radius: Int): RGBA = {
-    // TODO implement using while loops
-    ???
+    val (xFrom, xTo) = (
+      clamp(x - radius, 0, src.width - 1),
+      clamp(x + radius, 0, src.width - 1))
+    val (yFrom, yTo) = (
+      clamp(y - radius, 0, src.height - 1),
+      clamp(y + radius, 0, src.height - 1))
+
+    var xIdx: Int = xFrom
+    var yIdx: Int = yFrom
+    var r, g, b, a, cnt = 0;
+
+    while (xIdx <= xTo) {
+      while (yIdx <= yTo) {
+        val rgba = src(xIdx, yIdx)
+        r = r + red(rgba)
+        g = g + green(rgba)
+        b = b + blue(rgba)
+        a = a + alpha(rgba)
+
+        cnt = cnt + 1
+        yIdx = yIdx + 1
+      }
+
+      yIdx = yFrom
+      xIdx = xIdx + 1
+    }
+
+    rgba(r/cnt, g/cnt, b/cnt, a/cnt)
   }
 
 }
