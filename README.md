@@ -5,4 +5,4 @@ Hope this is helpful to someone. :smile:
 Happy Scala!
 
 My accomplishments so far:   
-* [Functional Programming Principles in Scala](https://www.coursera.org/account/accomplishments/certificate/LBXU9V5T3Q5X)
+* Functional Programming Principles in Scala (Course 1 of 5)
