@@ -39,6 +39,13 @@ package object scalashop {
     def apply(x: Int, y: Int): RGBA = data(y * width + x)
 
     def update(x: Int, y: Int, c: RGBA): Unit = data(y * width + x) = c
+
+    override def toString() = (for {
+      i <- 0 until data.length
+    } yield {
+      if ((i + 1) % width == 0) data(i) + "\n"
+      else data(i) + "\t"
+    }).mkString
   }
 
   /** Computes the blurred RGBA value of a single pixel of the input image. */
@@ -71,6 +78,14 @@ package object scalashop {
     }
 
     rgba(r/cnt, g/cnt, b/cnt, a/cnt)
+  }
+
+  def createBlurRangeUnits(range: Range, max: Int): List[(Int, Int)] = {
+    if (range.isEmpty) Nil
+    else {
+      val head = range.head
+      (head, Math.min(head + range.step, max)) :: createBlurRangeUnits(range.tail, max)
+    }
   }
 
 }
