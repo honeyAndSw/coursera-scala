@@ -41,17 +41,37 @@ object ParallelParenthesesBalancing {
   /** Returns `true` iff the parentheses in the input `chars` are balanced.
    */
   def balance(chars: Array[Char]): Boolean = {
-    ???
+    def balanceRecursive(chars: Array[Char], open: Int, close: Int): Boolean = {
+      if (open < close) {
+        return false
+      }
+
+      // Base condition
+      if (chars.isEmpty) {
+        return open == close
+      }
+
+      val head = chars.head
+      if (head == '(') {
+        balanceRecursive(chars.tail, open + 1, close)
+      } else if (head == ')') {
+        balanceRecursive(chars.tail, open, close + 1)
+      } else {
+        balanceRecursive(chars.tail, open, close)
+      }
+    }
+
+    balanceRecursive(chars, 0, 0)
   }
 
   /** Returns `true` iff the parentheses in the input `chars` are balanced.
    */
   def parBalance(chars: Array[Char], threshold: Int): Boolean = {
 
-    def traverse(idx: Int, until: Int, arg1: Int, arg2: Int) /*: ???*/ = {
+    def traverse(from: Int, until: Int, arg1: Int, arg2: Int) /*: ???*/ = {
       ???
     }
-
+    
     def reduce(from: Int, until: Int) /*: ???*/ = {
       ???
     }
