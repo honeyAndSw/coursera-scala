@@ -59,9 +59,21 @@ class ParallelCountChangeSuite extends FunSuite {
       assert(countChange(money, coins) == expected,
         s"countChange($money, $coins) should be $expected")
 
+    def checkParallel(money: Int, coins: List[Int], expected: Int) = {
+      def threadhold(money: Int, coins: List[Int]): Boolean = {
+        // Always use countChange.
+        false
+      }
+
+      assert(parCountChange(money, coins, threadhold) == expected,
+        s"countChange($money, $coins) should be $expected")
+    }
+
     check(50, List(1, 2, 5, 10), 341)
     check(250, List(1, 2, 5, 10, 20, 50), 177863)
-  }
 
+    checkParallel(50, List(1, 2, 5, 10), 341)
+    checkParallel(250, List(1, 2, 5, 10, 20, 50), 177863)
+  }
 
 }

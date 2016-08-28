@@ -45,9 +45,19 @@ object ParallelCountChange {
   /** Returns the number of ways change can be made from the specified list of
    *  coins for the specified amount of money.
    */
-  def countChange(money: Int, coins: List[Int]): Int = {
-    ???
-  }
+  def countChange(money: Int, coins: List[Int]): Int =
+    if (money == 0) {
+      // Consumes all of the money
+      1
+    } else if (money < 0 || coins.isEmpty) {
+      // No possible ways
+      0
+    } else {
+      // money > 0 and coins is not empty
+      val remainCoin = countChange(money - coins.head, coins)
+      val dropCoin = countChange(money, coins.tail)
+      remainCoin + dropCoin
+    }
 
   type Threshold = (Int, List[Int]) => Boolean
 
@@ -55,7 +65,15 @@ object ParallelCountChange {
    *  specified list of coins for the specified amount of money.
    */
   def parCountChange(money: Int, coins: List[Int], threshold: Threshold): Int = {
-    ???
+    if (threshold(money, coins)) {
+      countChange(money, coins)
+    } else {
+      val (remainCoin, dropCoin) = parallel[Int, Int] (
+        countChange(money - coins.head, coins),
+        countChange(money, coins.tail)
+      )
+      remainCoin + dropCoin
+    }
   }
 
   /** Threshold heuristic based on the starting money. */
