@@ -61,7 +61,35 @@ object ParallelParenthesesBalancing {
       }
     }
 
-    balanceRecursive(chars, 0, 0)
+    /**
+      * Modified balanceRecursive.
+      * Use one accumulator instead of two.
+      *
+      * @param chars
+      * @param diff
+      * @return
+      */
+    def balanceRecursive2(chars: Array[Char], diff: Int): Boolean = {
+      if (diff < 0) {
+        return false
+      }
+
+      // Base condition
+      if (chars.isEmpty) {
+        return diff == 0
+      }
+
+      val head = chars.head
+      if (head == '(') {
+        balanceRecursive2(chars.tail, diff + 1)
+      } else if (head == ')') {
+        balanceRecursive2(chars.tail, diff - 1)
+      } else {
+        balanceRecursive2(chars.tail, diff)
+      }
+    }
+
+    balanceRecursive2(chars, 0)
   }
 
   /** Returns `true` iff the parentheses in the input `chars` are balanced.
@@ -71,7 +99,7 @@ object ParallelParenthesesBalancing {
     def traverse(from: Int, until: Int, arg1: Int, arg2: Int) /*: ???*/ = {
       ???
     }
-    
+
     def reduce(from: Int, until: Int) /*: ???*/ = {
       ???
     }
