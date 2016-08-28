@@ -33,8 +33,23 @@ object LineOfSight {
 
   def max(a: Float, b: Float): Float = if (a > b) a else b
 
+  def angle(distance: Float, height: Float) = height / distance
+
+  /**
+    * Compute maximum angle of each point
+    *
+    * @param input height of a position
+    * @param output maximum angle of a position
+    */
   def lineOfSight(input: Array[Float], output: Array[Float]): Unit = {
-    ???
+    // Compute the first position
+    output(1) = angle(1, input(1))
+    var i = 2
+
+    while (i < input.size) {
+      output(i) = max(output(i - 1), angle(i, input(i)))
+      i = i + 1
+    }
   }
 
   sealed abstract class Tree {
