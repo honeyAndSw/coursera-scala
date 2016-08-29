@@ -110,7 +110,7 @@ object LineOfSight {
     var a = startingAngle
 
     while (i < until) {
-      a = max(a, input(i))
+      a = max(a, angle(i, input(i)))
       output(i) = a
       i = i + 1
     }
