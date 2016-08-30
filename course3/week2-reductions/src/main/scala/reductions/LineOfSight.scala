@@ -66,8 +66,8 @@ object LineOfSight {
    */
   def upsweepSequential(input: Array[Float], from: Int, until: Int): Float = {
     var max = angle(from, input(from))
-    var i = from + 1
 
+    var i = from
     while (i < until) {
       val ith = angle(i, input(i))
       if (ith > max) {
@@ -90,12 +90,14 @@ object LineOfSight {
   def upsweep(input: Array[Float], from: Int, end: Int,
     threshold: Int): Tree = {
 
-    if (end - from < threshold) {
+    if (end - from <= threshold) {
       Leaf(from, end, upsweepSequential(input, from, end))
     } else {
-      val mid = from + (end - from) / 2
+      val mid = from + ((end - from) / 2)
       val (left, right) = parallel[Tree, Tree](
-        upsweep(input, from, mid, threshold), upsweep(input, mid, end, threshold))
+        upsweep(input, from, mid, threshold),
+        upsweep(input, mid, end, threshold))
+
       Node(left, right)
     }
   }
