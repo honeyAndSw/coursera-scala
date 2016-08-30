@@ -121,11 +121,14 @@ object ParallelParenthesesBalancing {
         traverse(from, until, 0, 0)
       } else {
         val mid = (from + until) / 2
-        val (pair1, pair2) = parallel[AccPair, AccPair](reduce(from, mid), reduce(mid, until))
+        val ((lOpen, lClose), (rOpen, rClose)) = parallel[AccPair, AccPair](
+          reduce(from, mid),
+          reduce(mid, until))
 
-        val leftAcc = pair1._1 + pair2._1
-        val rightAcc = pair1._2 + pair2._2
-        (leftAcc - rightAcc, 0)
+        // Balancing unbalanced parentheses
+        val o = lOpen + rOpen
+        val c = lClose + rClose
+        if (lOpen >= rOpen) (o - c, 0) else (o, c)
       }
     }
 
