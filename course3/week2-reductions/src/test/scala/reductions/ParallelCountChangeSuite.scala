@@ -12,6 +12,11 @@ import ParallelCountChange._
 @RunWith(classOf[JUnitRunner])
 class ParallelCountChangeSuite extends FunSuite {
 
+  test("moneyThreshold") {
+    val threshold = moneyThreshold(1073741823)
+    assert(!threshold.apply(715827883, Nil))
+  }
+
   test("countChange should return 0 for money < 0") {
     def check(money: Int, coins: List[Int]) = 
       assert(countChange(money, coins) == 0,
@@ -70,5 +75,4 @@ class ParallelCountChangeSuite extends FunSuite {
 
     check(16, List(1), moneyThreshold(16), 1)
   }
-
 }
