@@ -70,7 +70,6 @@ object ParallelCountChange {
     } else if (threshold(money, coins)) {
       countChange(money, coins)
     } else {
-      println(s"invoke parallel $money")
       val (remainCoin, dropCoin) = parallel[Int, Int] (
         parCountChange(money - coins.head, coins, threshold),
         parCountChange(money, coins.tail, threshold)

@@ -33,7 +33,13 @@ object LineOfSight {
 
   def max(a: Float, b: Float): Float = if (a > b) a else b
 
-  def angle(distance: Float, height: Float) = height / distance
+  def angle(distance: Float, height: Float) = {
+    if (height <= 0) {
+      0f
+    } else {
+      height / distance
+    }
+  }
 
   /**
     * Compute maximum angle of each point
