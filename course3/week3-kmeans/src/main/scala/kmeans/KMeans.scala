@@ -66,11 +66,19 @@ class KMeans {
   def update(classified: GenMap[Point, GenSeq[Point]], oldMeans: GenSeq[Point]): GenSeq[Point] = {
     oldMeans map {
       oldMean => findAverage(oldMean, classified(oldMean))
-    } toIndexedSeq
+    }
   }
 
   def converged(eta: Double)(oldMeans: GenSeq[Point], newMeans: GenSeq[Point]): Boolean = {
-    ???
+    val absDistances: Vector[Double] = for {
+      idx <- oldMeans.size
+    } yield {
+      Math.abs(oldMeans(idx) squareDistance newMeans(idx))
+    }
+
+    absDistances forall {
+      dist => dist <= eta
+    }
   }
 
   @tailrec

@@ -57,7 +57,7 @@ class KMeansSuite extends FunSuite {
     checkClassify(points, means, expected)
   }
 
-  test("'update' should work for 'points' == GenSeq((1, 1, 0), (1, -1, 0), (-1, 1, 0), (-1, -1, 0)) and 'means' == GenSeq((0, 0, 0))") {
+  test("'update' should work for 'points' == GenSeq((1, 1, 0), (1, -1, 0), (-1, 1, 0), (-1, -1, 0))") {
     val p1 = new Point(1, 1, 0)
     val p2 = new Point(1, -1, 0)
     val p3 = new Point(-1, 1, 0)
