@@ -70,8 +70,8 @@ class KMeans {
   }
 
   def converged(eta: Double)(oldMeans: GenSeq[Point], newMeans: GenSeq[Point]): Boolean = {
-    val absDistances: Vector[Double] = for {
-      idx <- oldMeans.size
+    val absDistances: Seq[Double] = for {
+      idx <- 0 until oldMeans.size
     } yield {
       Math.abs(oldMeans(idx) squareDistance newMeans(idx))
     }
@@ -83,7 +83,11 @@ class KMeans {
 
   @tailrec
   final def kMeans(points: GenSeq[Point], means: GenSeq[Point], eta: Double): GenSeq[Point] = {
-    if (???) kMeans(???, ???, ???) else ??? // your implementation need to be tail recursive
+    val classified = classify(points, means)
+    val newMeans = update(classified, means)
+
+    // your implementation need to be tail recursive
+    if (!converged(eta)(means, newMeans)) kMeans(points, newMeans, eta) else newMeans
   }
 }
 
