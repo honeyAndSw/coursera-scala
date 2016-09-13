@@ -26,18 +26,21 @@ package object barneshut {
   }
 
   sealed abstract class Quad {
+    /** the center of mass of the bodies */
     def massX: Float
-
     def massY: Float
 
+    /** the total mass of bodies */
     def mass: Float
 
+    /** the coordinates of the center of the cell */
     def centerX: Float
-
     def centerY: Float
 
+    /** the length of the size of the cell */
     def size: Float
 
+    /** the total number of bodies */
     def total: Int
 
     def insert(b: Body): Quad
