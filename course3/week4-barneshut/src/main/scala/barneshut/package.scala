@@ -57,24 +57,39 @@ package object barneshut {
       * Insert a body to Empty Quad.
       * It simply creates a new Leaf with single body.
       */
-    def insert(b: Body): Quad = new Leaf(centerX, centerY, 1, Seq[Body](b))
+    def insert(b: Body): Quad = new Leaf(centerX, centerY, size, Seq[Body](b))
   }
 
   case class Fork(nw: Quad, ne: Quad, sw: Quad, se: Quad)
   extends Quad {
     /** center of the Fork = the lower right corner of the nw */
-    val centerX: Float = nw.size
-    val centerY: Float = nw.size
+    val centerX: Float = nw.centerX + (nw.size / 2)
+    val centerY: Float = nw.centerY + (nw.size / 2)
 
     val size: Float = nw.size + ne.size + sw.size + se.size
 
+    val total: Int = nw.total + ne.total + sw.total + se.total
+
     val mass: Float = nw.mass + ne.mass + sw.mass + se.mass
 
-    /** If the fork is empty, the center of mass = its center */
-    val massX: Float = if (total == 0) centerX else (nw.massX + ne.massX + sw.massX + se.massX) / mass
-    val massY: Float = if (total == 0) centerY else (nw.massY + ne.massY + sw.massY + se.massY) / mass
+    def foldLeftChildren(op: (Float, Quad) => Float): Float = {
+      List(nw, ne, sw, se).foldLeft(0f)(op)
+    }
 
-    val total: Int = nw.total + ne.total + sw.total + se.total
+    /**
+      * massX = (m_B * x_B + m_C * x_C + m_D * x_D + m_E * x_D) / mass
+      * I thought x_B should be centerX of itself, but x_B should be massX to pass test cases.
+      */
+    val massX: Float = if (total == 0) centerX else {
+      foldLeftChildren((f, q) => f + (q.mass * q.massX)) / mass
+    }
+
+    /**
+      * massX = (m_B * y_B + m_C * y_C + m_D * y_D + m_E * y_D) / mass
+      */
+    val massY: Float = if (total == 0) centerY else {
+      foldLeftChildren((f, q) => f + (q.mass * q.massY)) / mass
+    }
 
     /**
       * Update the respective child and create a new Fork.
@@ -86,9 +101,15 @@ package object barneshut {
 
   case class Leaf(centerX: Float, centerY: Float, size: Float, bodies: Seq[Body])
   extends Quad {
+    def foldLeftBody(op: (Float, Body) => Float): Float = {
+      bodies.foldLeft(0f)(op)
+    }
+
     val (mass, massX, massY) = (
-      bodies.fold((b1: Body, b2: Body) => b1.mass + b2.mass),
-      centerX, centerY)
+      foldLeftBody((f, body) => f + body.mass),
+      foldLeftBody((f, body) => f + body.x),
+      foldLeftBody((f, body) => f + body.y)
+    )
 
     val total: Int = bodies.length
 
