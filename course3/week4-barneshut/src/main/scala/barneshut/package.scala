@@ -182,7 +182,7 @@ package object barneshut {
           for (body <- bodies) yield addForce(body.mass, body.x, body.y)
         case Fork(nw, ne, sw, se) => {
           // see if node is far enough from the body, or recursion is needed
-          val dist = distance(quad.massX, quad.massY, quad.centerX, quad.centerY)
+          val dist = distance(quad.massX, quad.massY, x, y)
           if ((quad.size / dist) < theta) {
             // approximate a cluster of bodies with a single point
             addForce(quad.mass, quad.massX, quad.massY)
@@ -209,9 +209,12 @@ package object barneshut {
   val SECTOR_PRECISION = 8
 
   class SectorMatrix(val boundaries: Boundaries, val sectorPrecision: Int) {
+
     val sectorSize = boundaries.size / sectorPrecision
-    val matrix = new Array[ConcBuffer[Body]](sectorPrecision * sectorPrecision)
+
     for (i <- 0 until matrix.length) matrix(i) = new ConcBuffer
+    /** Each entry contains a ConcBuffer[Body] object. */
+    val matrix = new Array[ConcBuffer[Body]](sectorPrecision * sectorPrecision)
 
     def +=(b: Body): SectorMatrix = {
       ???
