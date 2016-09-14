@@ -105,11 +105,9 @@ package object barneshut {
       bodies.foldLeft(0f)(op)
     }
 
-    val (mass, massX, massY) = (
-      foldLeftBody((f, body) => f + body.mass),
-      foldLeftBody((f, body) => f + body.x),
-      foldLeftBody((f, body) => f + body.y)
-    )
+    val mass: Float = foldLeftBody((f, body) => f + body.mass)
+    val massX: Float = foldLeftBody((f, body) => f + body.mass * body.x) / mass
+    val massY: Float = foldLeftBody((f, body) => f + body.mass * body.y) / mass
 
     val total: Int = bodies.length
 
@@ -117,16 +115,19 @@ package object barneshut {
       * Only create a Fork when size is greater than minimumSize.
       */
     def insert(b: Body): Quad = if (size > minimumSize) {
+      println(s"[Leaf-insert-Fork] centerX:${centerX}, centerY:${centerY}, size:${size}")
       val half = size / 2
+      val quarter = size / 4
       val newBodies = b +: bodies
 
       val fork = new Fork(
-        new Leaf(centerX - half, centerY - half, half, newBodies), // nw
-        new Leaf(centerX + half, centerY - half, half, newBodies), // ne
-        new Leaf(centerX - half, centerY + half, half, newBodies), // sw
-        new Leaf(centerX + half, centerY + half, half, newBodies)) // se
+        new Leaf(centerX - quarter, centerY - quarter, half, newBodies), // nw
+        new Leaf(centerX + quarter, centerY - quarter, half, newBodies), // ne
+        new Leaf(centerX - quarter, centerY + quarter, half, newBodies), // sw
+        new Leaf(centerX + quarter, centerY + quarter, half, newBodies)) // se
       fork
     } else {
+      println(s"[Leaf-insert-Leaf] centerX:${centerX}, centerY:${centerY}, size:${size}")
       new Leaf(centerX, centerY, size, b +: bodies)
     }
   }
