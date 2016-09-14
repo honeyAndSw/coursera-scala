@@ -95,10 +95,6 @@ package object barneshut {
       * Update the respective child and create a new Fork.
       */
     def insert(b: Body): Fork = {
-      println(s"[Fork-insert] fork(centerX,centerY)=(${centerX},${centerY}), body(x,y):(${b.x}, ${b.y})")
-      new Fork(
-        nw.insert(b), ne.insert(b), sw.insert(b), se.insert(b)
-      )
       if (b.x < centerX) { // nw or sw
         if (b.y < centerY) {
           new Fork(nw.insert(b), ne, sw, se) // nw
@@ -131,20 +127,29 @@ package object barneshut {
       * Only create a Fork when size is greater than minimumSize.
       */
     def insert(b: Body): Quad = if (size > minimumSize) {
-      println(s"[Leaf-insert-Fork] centerX:${centerX}, centerY:${centerY}, size:${size}")
+      forkQuad(b)
+    } else {
+      new Leaf(centerX, centerY, size, b +: bodies)
+    }
+
+    /**
+      * insert helper function
+      */
+    def forkQuad(b: Body): Quad = {
       val half = size / 2
       val quarter = size / 4
-      val newBodies = b +: bodies
 
-      val fork = new Fork(
-        new Leaf(centerX - quarter, centerY - quarter, half, newBodies), // nw
-        new Leaf(centerX + quarter, centerY - quarter, half, newBodies), // ne
-        new Leaf(centerX - quarter, centerY + quarter, half, newBodies), // sw
-        new Leaf(centerX + quarter, centerY + quarter, half, newBodies)) // se
+      var fork: Quad = new Fork(
+        new Empty(centerX - quarter, centerY - quarter, half), // nw
+        new Empty(centerX + quarter, centerY - quarter, half), // ne
+        new Empty(centerX - quarter, centerY + quarter, half), // sw
+        new Empty(centerX + quarter, centerY + quarter, half)) // se
+
+      for (body <- b +: bodies) yield {
+        fork = fork insert body
+      }
+
       fork
-    } else {
-      println(s"[Leaf-insert-Leaf] centerX:${centerX}, centerY:${centerY}, size:${size}")
-      new Leaf(centerX, centerY, size, b +: bodies)
     }
   }
 

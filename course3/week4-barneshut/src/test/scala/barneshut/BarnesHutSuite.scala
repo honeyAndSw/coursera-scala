@@ -56,7 +56,7 @@ import FloatOps._
     val quad = Leaf(17.5f/*centerX*/, 27.5f/*centerY*/, 5f/*size*/, Seq(b)/*bodies*/)
     val afterInsert = quad.insert(b)
 
-    assert(8 == afterInsert.total, s"${afterInsert.total} should be 8")
+    assert(2 == afterInsert.total, s"${afterInsert.total} should be 8")
   }
 
   test("Fork with 3 empty quadrants and 1 leaf (nw)") {
