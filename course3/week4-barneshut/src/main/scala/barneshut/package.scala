@@ -94,9 +94,25 @@ package object barneshut {
     /**
       * Update the respective child and create a new Fork.
       */
-    def insert(b: Body): Fork = new Fork(
-      nw.insert(b), ne.insert(b), sw.insert(b), se.insert(b)
-    )
+    def insert(b: Body): Fork = {
+      println(s"[Fork-insert] fork(centerX,centerY)=(${centerX},${centerY}), body(x,y):(${b.x}, ${b.y})")
+      new Fork(
+        nw.insert(b), ne.insert(b), sw.insert(b), se.insert(b)
+      )
+      if (b.x < centerX) { // nw or sw
+        if (b.y < centerY) {
+          new Fork(nw.insert(b), ne, sw, se) // nw
+        } else {
+          new Fork(nw, ne, sw.insert(b), se) // sw
+        }
+      } else { // ne or se
+        if (b.y < centerY) {
+          new Fork(nw, ne.insert(b), sw, se) // ne
+        } else {
+          new Fork(nw, ne, sw, se.insert(b)) // se
+        }
+      }
+    }
   }
 
   case class Leaf(centerX: Float, centerY: Float, size: Float, bodies: Seq[Body])

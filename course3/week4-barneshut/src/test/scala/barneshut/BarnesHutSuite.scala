@@ -78,18 +78,6 @@ import FloatOps._
     assert(quad.massY ~= 26f, s"${quad.massY} should be 26f")
   }
 
-  test("Fork.insert with 4 empty quadrants") {
-    val b = new Body(123f, 18f, 26f, 0f, 0f)
-
-    val nw = Empty(17.5f, 27.5f, 5f)
-    val ne = Empty(22.5f, 27.5f, 5f)
-    val sw = Empty(17.5f, 32.5f, 5f)
-    val se = Empty(22.5f, 32.5f, 5f)
-
-    val quad = Fork(nw, ne, sw, se) insert b
-    assert(4 == quad.total, s"${quad.total} should be 4")
-  }
-
   test("Empty.insert(b) should return a Leaf with only that body") {
     val quad = Empty(51f, 46.3f, 5f)
     val b = new Body(3f, 54f, 46f, 0f, 0f)
