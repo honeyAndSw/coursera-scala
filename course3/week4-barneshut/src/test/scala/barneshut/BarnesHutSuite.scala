@@ -42,6 +42,14 @@ import FloatOps._
     assert(quad.total == 1, s"${quad.total} should be 1")
   }
 
+  test("Leaf.insert with 1 body") {
+    val b = new Body(123f, 18f, 26f, 0f, 0f)
+    val quad = Leaf(17.5f/*centerX*/, 27.5f/*centerY*/, 5f/*size*/, Seq(b)/*bodies*/)
+    val afterInsert = quad.insert(b)
+
+    assert(8 == afterInsert.total, s"${afterInsert.total} should be 8")
+  }
+
 
   test("Fork with 3 empty quadrants and 1 leaf (nw)") {
     val b = new Body(123f, 18f, 26f, 0f, 0f)
@@ -60,6 +68,18 @@ import FloatOps._
     assert(quad.mass ~= 123f, s"${quad.mass} should be 123f")
     assert(quad.massX ~= 18f, s"${quad.massX} should be 18f")
     assert(quad.massY ~= 26f, s"${quad.massY} should be 26f")
+  }
+
+  test("Fork.insert with 4 empty quadrants") {
+    val b = new Body(123f, 18f, 26f, 0f, 0f)
+
+    val nw = Empty(17.5f, 27.5f, 5f)
+    val ne = Empty(22.5f, 27.5f, 5f)
+    val sw = Empty(17.5f, 32.5f, 5f)
+    val se = Empty(22.5f, 32.5f, 5f)
+
+    val quad = Fork(nw, ne, sw, se) insert b
+    assert(4 == quad.total, s"${quad.total} should be 4")
   }
 
   test("Empty.insert(b) should return a Leaf with only that body") {

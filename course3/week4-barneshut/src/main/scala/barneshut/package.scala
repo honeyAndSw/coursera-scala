@@ -118,15 +118,13 @@ package object barneshut {
       */
     def insert(b: Body): Quad = if (size > minimumSize) {
       val half = size / 2
-      var fork = new Fork(
-        new Empty(half - centerX, half - centerY, half), // nw
-        new Empty(half + centerX, half - centerY, half), // ne
-        new Empty(half - centerX, half + centerY, half), // sw
-        new Empty(half + centerX, half + centerY, half)) // se
+      val newBodies = b +: bodies
 
-      for (body <- b +: bodies) yield {
-        fork = fork insert body
-      }
+      val fork = new Fork(
+        new Leaf(centerX - half, centerY - half, half, newBodies), // nw
+        new Leaf(centerX + half, centerY - half, half, newBodies), // ne
+        new Leaf(centerX - half, centerY + half, half, newBodies), // sw
+        new Leaf(centerX + half, centerY + half, half, newBodies)) // se
       fork
     } else {
       new Leaf(centerX, centerY, size, b +: bodies)
