@@ -204,7 +204,9 @@ package object barneshut {
           for (body <- bodies) yield addForce(body.mass, body.x, body.y)
         case Fork(nw, ne, sw, se) => {
           // see if node is far enough from the body, or recursion is needed
-          println(s"quad(massX,massY):(${quad.massX},${quad.massY}) quad(centerX,centerY):(${quad.centerX},${quad.centerY}) this(x,y):(${x},${y})")
+          println(s"massX,massY ${quad.size / distance(quad.massX, quad.massY, x, y)}")
+          println(s"centerX,centerY ${quad.size / distance(quad.centerX, quad.centerY, x, y)}")
+
           val dist = distance(quad.massX, quad.massY, x, y)
 
           if ((quad.size / dist) < theta) {
