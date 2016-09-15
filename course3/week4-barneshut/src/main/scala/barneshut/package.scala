@@ -210,7 +210,7 @@ package object barneshut {
             addForce(quad.mass, quad.massX, quad.massY)
           } else {
             for (q <- List(nw, ne, sw, se)) yield {
-              addForce(q.mass, q.massX, q.massY)
+              traverse(q)
             }
           }
         }
