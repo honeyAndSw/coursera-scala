@@ -243,13 +243,13 @@ package object barneshut {
       val xIdx = ((b.x - boundaries.minX) / sectorSize) toInt
       val yIdx = ((b.y - boundaries.minY) / sectorSize) toInt
 
-      if (xIdx < SECTOR_PRECISION && yIdx < SECTOR_PRECISION) {
+      if (xIdx < sectorPrecision && yIdx < sectorPrecision) {
         // Body is inside of the Boundaries
         this(xIdx, yIdx) += b
-      } else if (xIdx >= SECTOR_PRECISION) {
-        this(SECTOR_PRECISION - 1, yIdx) += b
+      } else if (xIdx >= sectorPrecision) {
+        this(sectorPrecision - 1, yIdx) += b
       } else {
-        this(xIdx, SECTOR_PRECISION - 1) += b
+        this(xIdx, sectorPrecision - 1) += b
       }
 
       this
@@ -260,9 +260,7 @@ package object barneshut {
     def combine(that: SectorMatrix): SectorMatrix = {
       val sector = new SectorMatrix(boundaries, sectorPrecision)
 
-      println("[combine]-----")
       for (i <- 0 until matrix.length) {
-        println(s"   ${i} this:${this.matrix(i)}, that:${that.matrix(i)}")
         sector.matrix(i) = this.matrix(i) combine that.matrix(i)
       }
 
