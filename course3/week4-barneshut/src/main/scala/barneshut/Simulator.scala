@@ -11,17 +11,39 @@ import common._
 
 class Simulator(val taskSupport: TaskSupport, val timeStats: TimeStatistics) {
 
+  /**
+    * Update minX, minY, maxX and maxY
+    */
   def updateBoundaries(boundaries: Boundaries, body: Body): Boundaries = {
-    ???
+    boundaries.minX = Math.min(body.x, boundaries.minX)
+    boundaries.maxX = Math.max(body.x, boundaries.maxX)
+
+    boundaries.minY = Math.min(body.y, boundaries.minY)
+    boundaries.maxY = Math.max(body.y, boundaries.maxY)
+
+    boundaries
   }
 
+  /**
+    * Merge two boundaries
+    */
   def mergeBoundaries(a: Boundaries, b: Boundaries): Boundaries = {
-    ???
+    val bound = new Boundaries
+
+    bound.minX = Math.min(a.minX, b.minX)
+    bound.maxX = Math.max(a.maxX, b.maxX)
+
+    bound.minY = Math.min(a.minY, b.minY)
+    bound.maxY = Math.max(a.maxY, b.maxY)
+
+    bound
   }
 
   def computeBoundaries(bodies: Seq[Body]): Boundaries = timeStats.timed("boundaries") {
     val parBodies = bodies.par
     parBodies.tasksupport = taskSupport
+    // How aggregate works?
+    //          (neutral elem of seqop)(seqop           , combop)
     parBodies.aggregate(new Boundaries)(updateBoundaries, mergeBoundaries)
   }
 
