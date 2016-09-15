@@ -204,7 +204,8 @@ package object barneshut {
           for (body <- bodies) yield addForce(body.mass, body.x, body.y)
         case Fork(nw, ne, sw, se) => {
           // see if node is far enough from the body, or recursion is needed
-          val dist = distance(quad.massX, quad.massY, x, y)
+          val dist = distance(quad.centerX, quad.centerY, x, y)
+          
           if ((quad.size / dist) < theta) {
             // approximate a cluster of bodies with a single point
             addForce(quad.mass, quad.massX, quad.massY)
