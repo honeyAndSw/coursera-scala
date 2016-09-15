@@ -240,8 +240,8 @@ package object barneshut {
     for (i <- 0 until matrix.length) matrix(i) = new ConcBuffer
 
     def +=(b: Body): SectorMatrix = {
-      val xIdx = Math.ceil(b.x / sectorSize).toInt - 1
-      val yIdx = Math.ceil(b.y / sectorSize).toInt - 1
+      val xIdx = ((b.x - boundaries.minX) / sectorSize) toInt
+      val yIdx = ((b.y - boundaries.minY) / sectorSize) toInt
 
       if (xIdx < SECTOR_PRECISION && yIdx < SECTOR_PRECISION) {
         // Body is inside of the Boundaries
@@ -260,7 +260,9 @@ package object barneshut {
     def combine(that: SectorMatrix): SectorMatrix = {
       val sector = new SectorMatrix(boundaries, sectorPrecision)
 
+      println("[combine]-----")
       for (i <- 0 until matrix.length) {
+        println(s"   ${i} this:${this.matrix(i)}, that:${that.matrix(i)}")
         sector.matrix(i) = this.matrix(i) combine that.matrix(i)
       }
 

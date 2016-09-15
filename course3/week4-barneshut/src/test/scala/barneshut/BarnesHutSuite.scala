@@ -135,19 +135,35 @@ import FloatOps._
     assert(res, s"Body not found in the right sector")
   }
 
-  test("'SectorMatrix.+=' should add a body at (25,98) to the correct bucket of a sector matrix of size 96") {
-    val body = new Body(5, 25/*x*/, 98/*y*/, 0.1f, 0.1f)
+  test("'SectorMatrix.+=' should add a body at (25,47) to the correct bucket of a sector matrix of size 100") {
+    val body = new Body(5, 25/*x*/, 47/*y*/, 0.1f, 0.1f)
 
     val boundaries = new Boundaries()
     boundaries.minX = 1
     boundaries.minY = 1
-    boundaries.maxX = 97
-    boundaries.maxY = 97
+    boundaries.maxX = 101
+    boundaries.maxY = 101
 
     val sm = new SectorMatrix(boundaries, SECTOR_PRECISION)
     sm += body
 
-    val res = sm(2, 7).size == 1 && sm(2, 7).find(_ == body).isDefined
+    val res = sm(1, 3).size == 1 && sm(1, 3).find(_ == body).isDefined
+    assert(res, s"Body not found in the right sector")
+  }
+
+  test("'SectorMatrix.+=' should add a body at (64,27) to the correct bucket of a sector matrix of size 108") {
+    val body = new Body(5, 64/*x*/, 27/*y*/, 0.1f, 0.1f)
+
+    val boundaries = new Boundaries()
+    boundaries.minX = 0
+    boundaries.minY = 0
+    boundaries.maxX = 108
+    boundaries.maxY = 108
+
+    val sm = new SectorMatrix(boundaries, 12)
+    sm += body
+
+    val res = sm(7, 3).size == 1 && sm(7, 3).find(_ == body).isDefined
     assert(res, s"Body not found in the right sector")
   }
 
