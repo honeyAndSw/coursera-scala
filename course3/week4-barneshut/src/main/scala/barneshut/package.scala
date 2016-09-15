@@ -205,7 +205,7 @@ package object barneshut {
         case Fork(nw, ne, sw, se) => {
           // see if node is far enough from the body, or recursion is needed
           val dist = distance(quad.centerX, quad.centerY, x, y)
-          
+
           if ((quad.size / dist) < theta) {
             // approximate a cluster of bodies with a single point
             addForce(quad.mass, quad.massX, quad.massY)
@@ -235,19 +235,36 @@ package object barneshut {
 
     val sectorSize = boundaries.size / sectorPrecision
 
-    for (i <- 0 until matrix.length) matrix(i) = new ConcBuffer
-    /** Each entry contains a ConcBuffer[Body] object. */
     val matrix = new Array[ConcBuffer[Body]](sectorPrecision * sectorPrecision)
+    /** Each entry contains a ConcBuffer[Body] object. */
+    for (i <- 0 until matrix.length) matrix(i) = new ConcBuffer
 
     def +=(b: Body): SectorMatrix = {
-      ???
+      val xIdx = Math.ceil(b.x / sectorSize).toInt - 1
+      val yIdx = Math.ceil(b.y / sectorSize).toInt - 1
+
+      if (xIdx < SECTOR_PRECISION && yIdx < SECTOR_PRECISION) {
+        // Body is inside of the Boundaries
+        this(xIdx, yIdx) += b
+      } else if (xIdx >= SECTOR_PRECISION) {
+        this(SECTOR_PRECISION - 1, yIdx) += b
+      } else {
+        this(xIdx, SECTOR_PRECISION - 1) += b
+      }
+
       this
     }
 
     def apply(x: Int, y: Int) = matrix(y * sectorPrecision + x)
 
     def combine(that: SectorMatrix): SectorMatrix = {
-      ???
+      val sector = new SectorMatrix(boundaries, sectorPrecision)
+
+      for (i <- 0 until matrix.length) {
+        sector.matrix(i) = this.matrix(i) combine that.matrix(i)
+      }
+
+      sector
     }
 
     def toQuad(parallelism: Int): Quad = {

@@ -120,16 +120,79 @@ import FloatOps._
   // test cases for sector matrix
 
   test("'SectorMatrix.+=' should add a body at (25,47) to the correct bucket of a sector matrix of size 96") {
-    val body = new Body(5, 25, 47, 0.1f, 0.1f)
+    val body = new Body(5, 25/*x*/, 47/*y*/, 0.1f, 0.1f)
+
     val boundaries = new Boundaries()
     boundaries.minX = 1
     boundaries.minY = 1
     boundaries.maxX = 97
     boundaries.maxY = 97
+
     val sm = new SectorMatrix(boundaries, SECTOR_PRECISION)
     sm += body
+
     val res = sm(2, 3).size == 1 && sm(2, 3).find(_ == body).isDefined
     assert(res, s"Body not found in the right sector")
+  }
+
+  test("'SectorMatrix.+=' should add a body at (25,98) to the correct bucket of a sector matrix of size 96") {
+    val body = new Body(5, 25/*x*/, 98/*y*/, 0.1f, 0.1f)
+
+    val boundaries = new Boundaries()
+    boundaries.minX = 1
+    boundaries.minY = 1
+    boundaries.maxX = 97
+    boundaries.maxY = 97
+
+    val sm = new SectorMatrix(boundaries, SECTOR_PRECISION)
+    sm += body
+
+    val res = sm(2, 7).size == 1 && sm(2, 7).find(_ == body).isDefined
+    assert(res, s"Body not found in the right sector")
+  }
+
+  test("'SectorMatrix.combine' (1)") {
+    val body1 = new Body(5, 25/*x*/, 47/*y*/, 0.1f, 0.1f)
+    val body2 = new Body(5, 26/*x*/, 47/*y*/, 0.1f, 0.1f)
+
+    val boundaries = new Boundaries()
+    boundaries.minX = 1
+    boundaries.minY = 1
+    boundaries.maxX = 97
+    boundaries.maxY = 97
+
+    val sm1 = new SectorMatrix(boundaries, SECTOR_PRECISION)
+    sm1 += body1
+
+    val sm2 = new SectorMatrix(boundaries, SECTOR_PRECISION)
+    sm2 += body2
+
+    val combine = sm1 combine sm2
+    assert(combine(2, 3).size == 2)
+    assert(combine(2, 3).find(_ == body1).isDefined)
+    assert(combine(2, 3).find(_ == body2).isDefined)
+  }
+
+  test("'SectorMatrix.combine' (2)") {
+    val body1 = new Body(5, 1/*x*/, 47/*y*/, 0.1f, 0.1f)
+    val body2 = new Body(5, 26/*x*/, 47/*y*/, 0.1f, 0.1f)
+
+    val boundaries = new Boundaries()
+    boundaries.minX = 1
+    boundaries.minY = 1
+    boundaries.maxX = 97
+    boundaries.maxY = 97
+
+    val sm1 = new SectorMatrix(boundaries, SECTOR_PRECISION)
+    sm1 += body1 // expected position (0, 3)
+
+    val sm2 = new SectorMatrix(boundaries, SECTOR_PRECISION)
+    sm2 += body2 // expected position (2, 3)
+
+    val combine = sm1 combine sm2
+    assert(combine(2, 3).size == 1 && combine(0, 3).size == 1)
+    assert(combine(0, 3).find(_ == body1).isDefined)
+    assert(combine(2, 3).find(_ == body2).isDefined)
   }
 
 }
