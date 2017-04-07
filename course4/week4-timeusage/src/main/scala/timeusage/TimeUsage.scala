@@ -3,7 +3,10 @@ package timeusage
 import java.nio.file.Paths
 
 import org.apache.spark.sql._
+import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types._
+
+import scala.util.Try
 
 /** Main class */
 object TimeUsage {
@@ -29,6 +32,8 @@ object TimeUsage {
     val (columns, initDf) = read("/timeusage/atussum.csv")
     val (primaryNeedsColumns, workColumns, otherColumns) = classifiedColumns(columns)
     val summaryDf = timeUsageSummary(primaryNeedsColumns, workColumns, otherColumns, initDf)
+    // summaryDf.show()
+
     val finalDf = timeUsageGrouped(summaryDf)
     finalDf.show()
   }
@@ -71,7 +76,7 @@ object TimeUsage {
   /** @return An RDD Row compatible with the schema produced by `dfSchema`
     * @param line Raw fields
     */
-  def row(line: List[String]): Row = Row(line)
+  def row(line: List[String]): Row = Row.fromSeq(line.head +: line.tail.map(_.toDouble))
 
   /** @return The initial data frame columns partitioned in three groups: primary needs (sleeping, eating, etc.),
     *         work and other (leisure activities)
@@ -94,17 +99,21 @@ object TimeUsage {
 
     def isWorkingActivity(name: String) = name.startsWith("t05") || name.startsWith("t1805")
 
-    columnNames.map {
-      case c if isPrimaryNeedsActivity(c) => ("primary", c)
-      case c if isWorkingActivity(c) => ("working", c)
-      case c => ("leisure", c)
-    }.foldRight((List[Column](), List[Column](), List[Column]())){ (t, acc) =>
-      t._1 match {
-        case "primary" => (new Column(t._2) +: acc._1, acc._2, acc._3)
-        case "working" => (acc._1, new Column(t._2) +:acc._2, acc._3)
-        case "leisure" => (acc._1, acc._2, new Column(t._2) +:acc._3)
+    columnNames
+      .filter { n =>
+        Try(n.substring(1).toInt).isSuccess
       }
-    }
+      .map {
+        case c if isPrimaryNeedsActivity(c) => ("primary", c)
+        case c if isWorkingActivity(c) => ("working", c)
+        case c => ("leisure", c)
+      }.foldRight((List[Column](), List[Column](), List[Column]())){ (t, acc) =>
+        t._1 match {
+          case "primary" => (new Column(t._2) +: acc._1, acc._2, acc._3)
+          case "working" => (acc._1, new Column(t._2) +:acc._2, acc._3)
+          case "leisure" => (acc._1, acc._2, new Column(t._2) +:acc._3)
+        }
+      }
   }
 
   /** @return a projection of the initial DataFrame such that all columns containing hours spent on primary needs
@@ -143,13 +152,20 @@ object TimeUsage {
     otherColumns: List[Column],
     df: DataFrame
   ): DataFrame = {
-    val workingStatusProjection: Column = ???
-    val sexProjection: Column = ???
-    val ageProjection: Column = ???
+    val workingStatusProjection: Column = when($"telfs" >= 1 && $"telfs" < 3, "working").otherwise("not working").as("working")
 
-    val primaryNeedsProjection: Column = ???
-    val workProjection: Column = ???
-    val otherProjection: Column = ???
+    val sexProjection: Column = when($"tesex" === 1, "male").otherwise("female").as("sex")
+
+    val ageProjection: Column =
+      when($"teage" >= 15 && $"teage" <= 22, "young")
+      .when($"teage" >= 23 && $"teage" <= 55, "active")
+      .otherwise("elder")
+      .as("age")
+
+    val primaryNeedsProjection: Column = primaryNeedsColumns.reduce(_ + _).as("primaryNeeds")
+    val workProjection: Column = workColumns.reduce(_ + _).as("work")
+    val otherProjection: Column = otherColumns.reduce(_ + _).as("other")
+
     df
       .select(workingStatusProjection, sexProjection, ageProjection, primaryNeedsProjection, workProjection, otherProjection)
       .where($"telfs" <= 4) // Discard people who are not in labor force
